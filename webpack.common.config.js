@@ -37,6 +37,7 @@ module.exports = {
           loader: 'css-loader',
           options: {
             minimize: true, // 使用 css 的压缩功能
+            module: true, // 开启模块化
           },
         },
         {

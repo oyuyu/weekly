@@ -81,7 +81,7 @@ class BasicLayout extends React.Component {
         {this.siderRender(config)}
         <Layout>
           <Header collapsed={this.state.collapsed} toggle={this.toggle} />
-          <Content style={{ margin: '24px 16px', padding: 24, background: '#fff' }}>
+          <Content style={{ margin: '24px 16px', padding: 24 }}>
             {this.props.children}
           </Content>
           <Footer />
