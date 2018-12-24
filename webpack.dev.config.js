@@ -15,6 +15,7 @@ module.exports = merge(common, {
     host: '127.0.0.1',  // 主机地址
     port: 9000,  // 端口号
     compress: true,  // 开发服务器是否启动gzip等压缩
+    disableHostCheck: true,
     proxy: {
         "/api": {
           target: 'http://172.13.2.10:8080/',

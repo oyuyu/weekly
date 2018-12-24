@@ -7,7 +7,7 @@
     "babel-plugin-imports-transform",
     ["import", {
       "libraryName": "antd",
-      "style": true
+      "style": "css"
     }],
     "react-hot-loader/babel"
   ]

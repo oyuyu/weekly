@@ -14,7 +14,8 @@ import Header from './Header';
 import Footer from './Footer';
 import logo from '../assets/logo.svg';
 
-import './index.less';
+// import './index.less';
+import styles from './index.less';
 
 import config from '../common/config';
 
@@ -39,7 +40,7 @@ class BasicLayout extends React.Component {
         collapsible
         collapsed={this.state.collapsed}
       >
-        <Link to='/'><div className="logo" style={{ backgroundImage: `url(${logo})` }} /></Link>
+        <Link to='/'><div className={styles.logo} style={{ backgroundImage: `url(${logo})` }} /></Link>
         <Menu theme="dark" mode="inline" defaultOpenKeys={['/' + location.hash.replace('#', '').split('/')[1]]} selectedKeys={[location.hash.replace('#', '')]}>
           {
             list.map((value, index) => {
@@ -77,7 +78,7 @@ class BasicLayout extends React.Component {
 
   render() {
     return (
-      <Layout id='layout'  style={{ minHeight: '100%' }}>
+      <Layout id={styles.layout}  style={{ minHeight: '100%' }}>
         {this.siderRender(config)}
         <Layout>
           <Header collapsed={this.state.collapsed} toggle={this.toggle} />

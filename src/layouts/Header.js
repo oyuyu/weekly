@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Layout, Icon, Menu, Dropdown } from 'antd';
+import styles from './index.less';
 
 const { Header } = Layout;
 
@@ -10,7 +11,7 @@ class HeaderView extends React.Component {
     return (
       <Header style={{ background: '#fff', padding: 0 }}>
         <Icon
-          className="trigger"
+          className={styles.trigger}
           type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.props.toggle}
         />

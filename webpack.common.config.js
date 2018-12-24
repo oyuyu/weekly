@@ -30,14 +30,15 @@ module.exports = {
       exclude: /(node_modules)/,
       loader: "babel-loader",
     }, {
-      test: /\.less$/,
+      test: /\.(less|css)$/,
+      exclude: /(node_modules)/,
       use: [
         'style-loader',
         {
           loader: 'css-loader',
           options: {
             minimize: true, // 使用 css 的压缩功能
-            module: true, // 开启模块化
+            modules: true, // 开启模块化
           },
         },
         {
@@ -51,7 +52,10 @@ module.exports = {
          }
       ]
     }, {
-      test: /\.css$/,
+      // antd 按需加载 与 css modules 存在冲突。
+      // 解决办法：针对于 node_modules 不设置 css modules
+      test: /\.(less|css)$/,
+      exclude: /(src)/,
       use: [
         'style-loader',
         {
@@ -61,9 +65,11 @@ module.exports = {
           },
         },
         {
-          loader: "postcss-loader",
-          options: { plugins: [autoprefixer()] }
-        }
+          loader: 'less-loader',
+           options: {
+             javascriptEnabled: true,
+           },
+         }
       ]
     }, {
       test: /\.(gif|jpg|jpeg|png|svg)$/,
