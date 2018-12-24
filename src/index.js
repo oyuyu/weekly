@@ -16,9 +16,6 @@ const middleware = [thunk, sagaMiddleware, logger];
 const store = createStore(rootReducer, applyMiddleware(...middleware));
 sagaMiddleware.run(rootSaga);
 
-// import '../mock/user';
-// import '../mock/assistant';
-
 ReactDOM.render(
   <Provider store={store}>
     < App / >
