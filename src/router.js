@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 import {
   HashRouter,
   Route,
@@ -6,6 +6,7 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
+import Loading from './components/Loading';
 
 import BasicLayout from './layouts/BasicLayout';
 
@@ -20,11 +21,20 @@ export default class App extends React.Component {
     return (
       <HashRouter basename='/'>
         <BasicLayout>
-          <Switch>
-            {
-              config.map(value => (<Route path={value.path} key={value.path} exact component={value.component} />))
-            }
-          </Switch>
+          <Suspense fallback={<Loading />}>
+            <Switch>
+              {
+                config.map(value => (
+                  <Route
+                    path={value.path}
+                    key={value.path}
+                    exact
+                    component={value.component}
+                  />
+                ))
+              }
+            </Switch>
+          </Suspense>
         </BasicLayout>
       </HashRouter>
     );

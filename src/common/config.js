@@ -1,4 +1,4 @@
-import Loadable from 'react-loadable';
+import React, { lazy } from 'react';
 import Loading from '../components/Loading';
 
 const config = [
@@ -12,10 +12,8 @@ const config = [
 ];
 
 function dynamicWrapper (fn) {
-  return Loadable({
-    loader: fn,
-    loading: Loading,
-  });
+  let DynamicWrapper = lazy(fn);
+  return () => <DynamicWrapper />;
 }
 
 export default config;

@@ -39,6 +39,7 @@ module.exports = {
           options: {
             minimize: true, // 使用 css 的压缩功能
             modules: true, // 开启模块化
+            localIdentName: '[name]__[local]___[hash:base64:5]',
           },
         },
         {
