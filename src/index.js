@@ -1,23 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, combinReducers } from 'redux';
-import logger from 'redux-logger';
-import thunk from 'redux-thunk';
-import createSagaMiddleware from 'redux-saga';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import { Provider } from 'react-redux';
+// import { createStore, applyMiddleware, combinReducers } from 'redux';
+// import logger from 'redux-logger';
+// import thunk from 'redux-thunk';
+// import createSagaMiddleware from 'redux-saga';
+//
+// import App from './router';
+//
+// import rootReducer from './models/reducers';
+// import rootSaga from './models/effects';
+//
+// const sagaMiddleware = createSagaMiddleware();
+// const middleware = [thunk, sagaMiddleware, logger];
+// const store = createStore(rootReducer, applyMiddleware(...middleware));
+// sagaMiddleware.run(rootSaga);
+//
+// ReactDOM.render(
+//   <Provider store={store}>
+//     < App / >
+//   </Provider>
+// , document.getElementById('root'));
 
-import App from './router';
+import dva from 'dva';
+import createHistory from 'history/createBrowserHistory';
 
-import rootReducer from './models/reducers';
-import rootSaga from './models/effects';
+// 1. Initialize
+const app = dva({
+    history:createHistory()
+});
 
-const sagaMiddleware = createSagaMiddleware();
-const middleware = [thunk, sagaMiddleware, logger];
-const store = createStore(rootReducer, applyMiddleware(...middleware));
-sagaMiddleware.run(rootSaga);
+// 2. Plugins
+// app.use({});
 
-ReactDOM.render(
-  <Provider store={store}>
-    < App / >
-  </Provider>
-, document.getElementById('root'));
+// 3. Model
+// app.model(require('./models/example').default);
+
+// 4. Router
+app.router(require('./router').default);
+
+// 5. Start
+app.start('#root');
