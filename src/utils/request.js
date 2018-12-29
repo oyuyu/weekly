@@ -74,9 +74,12 @@ function request (url, params) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
-      'Access-Control-Allow-Credentials': true,
+      "Access-Control-Allow-Credentials": "true",
       ...params.headers,
     },
+    data: {
+      ...params.data,
+    }
   })
 }
 

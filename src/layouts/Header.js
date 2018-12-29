@@ -14,7 +14,6 @@ const { Header } = Layout;
 export default class HeaderView extends React.Component {
 
   componentDidMount() {
-    console.log(Object.keys(this.props.currentUser.userInfo));
     if (Object.keys(this.props.currentUser.userInfo).length === 0) {
       this.props.dispatch({
         type: 'user/userInfo',

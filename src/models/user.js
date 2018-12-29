@@ -69,7 +69,6 @@ export default {
         setAuthority('admin');
         yield put(routerRedux.push('/'));
       } else {
-        message.error(response.data.msg);
         setAuthority([]);
         yield put(routerRedux.push('/login'));
       }
