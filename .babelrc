@@ -6,10 +6,7 @@
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-transform-runtime",
     "babel-plugin-imports-transform",
-    ["import", {
-      "libraryName": "antd",
-      "style": "css"
-    }],
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }],
     "react-hot-loader/babel"
   ]
 }

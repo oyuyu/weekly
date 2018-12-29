@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin"); // 引入html-webpack-
 const CleanWebpackPlugin = require("clean-webpack-plugin"); // 引入clean-webpack-plugin插件，作用是清除dist文件及下的内容，因为每次编译完成后都会有一个dist文件夹存放静态文件，所以需要清除上次的dist文件
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const themeColor = '#FAAD14';
+
 module.exports = {
   entry: {
     vendor: ['react', 'react-dom', 'react-router-dom', 'redux', 'dva'],
@@ -45,9 +47,9 @@ module.exports = {
         {
           loader: 'less-loader',
            options: {
-             // modifyVars: {
-             //   "@primary-color": "#55AF7B",
-             // },
+             modifyVars: {
+               "@primary-color": themeColor,
+             },
              javascriptEnabled: true,
            },
          }
@@ -68,6 +70,9 @@ module.exports = {
         {
           loader: 'less-loader',
            options: {
+             modifyVars: {
+               "@primary-color": themeColor,
+             },
              javascriptEnabled: true,
            },
          }

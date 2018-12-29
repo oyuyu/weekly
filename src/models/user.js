@@ -12,9 +12,7 @@ export default {
   namespace: 'user',
 
   state: {
-    userInfo: {
-
-    }
+    userInfo: {}
   },
 
   effects: {
@@ -67,7 +65,7 @@ export default {
           }
         })
         setAuthority('admin');
-        yield put(routerRedux.push('/'));
+        // yield put(routerRedux.push('/'));
       } else {
         setAuthority([]);
         yield put(routerRedux.push('/login'));

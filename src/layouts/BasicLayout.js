@@ -42,7 +42,7 @@ class BasicLayout extends React.Component {
         collapsible
         collapsed={this.state.collapsed}
       >
-        <Link to='/'><div className={styles.logo} style={{ backgroundImage: `url(${logo})` }} /></Link>
+        <Link to='/'><div id={styles.logoLayout}><div className={styles.logo} style={{ backgroundImage: `url(${logo})` }} /></div></Link>
         <Menu theme="dark" mode="inline" defaultOpenKeys={[]} selectedKeys={[location.pathname]}>
           {
             list.map((value, index) => {

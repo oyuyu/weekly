@@ -13,7 +13,7 @@ module.exports = merge(common, {
     inline: true, // 实时刷新
     hot: true,  // 热加载
     host: 'local.weekly-dev.hsmob.com',  // 主机地址
-    port: 8003,  // 端口号
+    port: 9000,  // 端口号
     compress: true,  // 开发服务器是否启动gzip等压缩
     disableHostCheck: true,
     proxy: {

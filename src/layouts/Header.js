@@ -14,7 +14,9 @@ const { Header } = Layout;
 export default class HeaderView extends React.Component {
 
   componentDidMount() {
-    if (Object.keys(this.props.currentUser.userInfo).length === 0) {
+    const { userInfo } = this.props.currentUser;
+
+    if (Object.keys(userInfo).length === 0) {
       this.props.dispatch({
         type: 'user/userInfo',
       })
@@ -38,6 +40,8 @@ export default class HeaderView extends React.Component {
   }
 
   render() {
+    const { userInfo } = this.props.currentUser;
+
     return (
       <Header id={styles.header}>
         <Icon
@@ -48,7 +52,7 @@ export default class HeaderView extends React.Component {
         <div className={styles.user}>
           <Dropdown overlay={this.menuRender()} trigger={['click']}>
             <a className="ant-dropdown-link" href="#">
-              {this.props.currentUser.userInfo.userName} <Icon type="down" />
+              {userInfo.userName} <Icon type="down" />
             </a>
           </Dropdown>
         </div>
