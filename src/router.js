@@ -10,7 +10,10 @@ import { Router, Route, Switch } from 'dva/router';
 import Loading from './components/Loading';
 
 import BasicLayout from './layouts/BasicLayout';
+import UserLayout from './layouts/UserLayout';
+import Authorized from './components/Authorized';
 
+import {setAuthority, getAuthority} from './utils/authority';
 import config from './common/config';
 
 // export default class App extends React.Component {
@@ -43,24 +46,31 @@ import config from './common/config';
 // }
 
 export default function App ({ history }) {
+
+  const LayoutComponent = ({children}) => {
+    const auth = getAuthority();
+    if (auth.length === 0) {
+      return (
+        <UserLayout>
+          {children}
+        </UserLayout>
+      )
+    } else {
+      return (
+        <BasicLayout>
+          {children}
+        </BasicLayout>
+      )
+    }
+  }
+
   return (
     <Router history={history}>
-      <BasicLayout>
+      <LayoutComponent>
         <Suspense fallback={<Loading />}>
-          <Switch>
-            {
-              config.map(value => (
-                <Route
-                  path={value.path}
-                  key={value.path}
-                  exact
-                  component={value.component}
-                />
-              ))
-            }
-          </Switch>
+          <Authorized config={config} path={['/home', '/login']} />
         </Suspense>
-      </BasicLayout>
+      </LayoutComponent>
     </Router>
   )
 }

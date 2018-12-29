@@ -3,7 +3,6 @@ import axios from 'axios';
 // request 拦截
 axios.interceptors.request.use((config) => {
   // config.headers['X-Requested-With'] = 'XMLHttpRequest'
-
   return config
 })
 
@@ -64,11 +63,20 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(err)
 });
 
+// 表示跨域请求时是否需要使用凭证，允许携带cookie
+axios.defaults.withCredentials = true;
+
 function request (url, params) {
   return axios({
-    method: 'get',
+    method: 'GET',
     url,
     ...params,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Credentials': true,
+      ...params.headers,
+    },
   })
 }
 

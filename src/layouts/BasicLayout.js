@@ -34,6 +34,8 @@ class BasicLayout extends React.Component {
   }
 
   siderRender = list => {
+    const { match, location, history } = this.props;
+
     return (
       <Sider
         trigger={null}
@@ -41,7 +43,7 @@ class BasicLayout extends React.Component {
         collapsed={this.state.collapsed}
       >
         <Link to='/'><div className={styles.logo} style={{ backgroundImage: `url(${logo})` }} /></Link>
-        <Menu theme="dark" mode="inline" defaultOpenKeys={['/' + location.hash.replace('#', '').split('/')[1]]} selectedKeys={[location.hash.replace('#', '')]}>
+        <Menu theme="dark" mode="inline" defaultOpenKeys={[]} selectedKeys={[location.pathname]}>
           {
             list.map((value, index) => {
               if (value.icon) {

@@ -18,8 +18,9 @@ module.exports = merge(common, {
     disableHostCheck: true,
     proxy: {
         "/api": {
-          target: 'http://172.13.2.10:8080/',
-          changeOrigin: true
+          target: 'http://weekly-dev.hsmob.com',
+          changeOrigin: true,
+          secure: false,
         }
     },
   },
