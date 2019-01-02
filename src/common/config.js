@@ -1,10 +1,9 @@
 import React, { lazy } from 'react';
-import Loading from '../components/Loading';
 
 const config = [
   {
     name: '我的周报',
-    icon: 'dashboard',
+    icon: 'book',
     path: '/home',
     component: dynamicWrapper(() => import('../routes/Home/')),
     role: ['admin'],
@@ -12,17 +11,17 @@ const config = [
     name: '我的OKR',
     icon: 'form',
     path: '/okr',
-    component: dynamicWrapper(() => import('../routes/Home/')),
+    component: dynamicWrapper(() => import('../routes/Okr/')),
     role: ['admin'],
   }, {
     name: '关注的人',
-    icon: 'table',
+    icon: 'star',
     path: '/focus',
     component: dynamicWrapper(() => import('../routes/Home/')),
     role: ['admin'],
   }, {
     name: '人员列表',
-    icon: 'profile',
+    icon: 'team',
     path: '/crew',
     component: dynamicWrapper(() => import('../routes/Home/')),
     role: ['admin'],

@@ -52,7 +52,7 @@ export default class HeaderView extends React.Component {
         <div className={styles.user}>
           <Dropdown overlay={this.menuRender()} trigger={['click']}>
             <a className="ant-dropdown-link" href="#">
-              {userInfo.userName} <Icon type="down" />
+              # {userInfo.userName} <Icon type="down" />
             </a>
           </Dropdown>
         </div>

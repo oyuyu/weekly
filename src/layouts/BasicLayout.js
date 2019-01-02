@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   Layout,
   Menu,
@@ -41,6 +41,9 @@ class BasicLayout extends React.Component {
         trigger={null}
         collapsible
         collapsed={this.state.collapsed}
+        style={{
+          overflow: 'auto', height: '100vh', position: 'fixed', left: 0,
+        }}
       >
         <Link to='/'><div id={styles.logoLayout}><div className={styles.logo} style={{ backgroundImage: `url(${logo})` }} /></div></Link>
         <Menu theme="dark" mode="inline" defaultOpenKeys={[]} selectedKeys={[location.pathname]}>
@@ -79,17 +82,20 @@ class BasicLayout extends React.Component {
   }
 
   render() {
+
     return (
-      <Layout id={styles.layout}  style={{ minHeight: '100%' }}>
+      <Fragment>
         {this.siderRender(config)}
-        <Layout>
-          <Header collapsed={this.state.collapsed} toggle={this.toggle} />
-          <Content style={{ margin: '24px 16px', padding: 24 }}>
-            {this.props.children}
-          </Content>
-          <Footer />
+        <Layout id={styles.layout} style={{ minHeight: '100%', marginLeft: this.state.collapsed ? 80 : 200  }}>
+          <Layout style={{ minHeight: '100%' }}>
+            <Header collapsed={this.state.collapsed} toggle={this.toggle} />
+            <Content style={{ margin: '24px 16px', padding: 16 }}>
+              {this.props.children}
+            </Content>
+            <Footer />
+          </Layout>
         </Layout>
-      </Layout>
+      </Fragment>
     );
   }
 }

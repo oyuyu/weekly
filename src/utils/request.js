@@ -69,7 +69,7 @@ axios.defaults.withCredentials = true;
 function request (url, params) {
   return axios({
     method: 'GET',
-    url,
+    url: `/api${url}`,
     ...params,
     headers: {
       'Accept': 'application/json',
