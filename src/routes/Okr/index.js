@@ -6,15 +6,31 @@ import {
   Select,
   Button,
   Skeleton,
-  Card,
-  Icon,
+  List,
+  Tag,
 } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
+import GeneralItem from './GeneralItem';
+import ColonelItem from './ColonelItem';
+import Line from '../../components/Line';
 
 const Option = Select.Option;
 const fullWidth = { width: '100%' };
-const number = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十'];
+const tagKey = {
+  1: {
+    color: '#87d068',
+    text: '进展'
+  },
+  2: {
+    color: '#108ee9',
+    text: '计划'
+  },
+  3: {
+    color: '#f50',
+    text: '问题'
+  }
+}
 
 @connect(state => ({
   currentUser: state.user,
@@ -54,19 +70,18 @@ export default class Okr extends React.Component {
     })
   }
 
-  stateHandler = (value, key) => {
-    let state = this.state;
-    state[key] = value;
-    this.setState({
-      ...state,
-    });
-
-    if (state.yearSelectValue < state.limit.year || (state.yearSelectValue = state.limit.year && state.quarterSelectValue <= state.limit.quarter)) {
+  getOkrDetail = () => {
+    let {
+      yearSelectValue,
+      quarterSelectValue,
+      limit,
+    } = this.state;
+    if (yearSelectValue < limit.year || (yearSelectValue = limit.year && quarterSelectValue <= limit.quarter)) {
       this.props.dispatch({
         type: 'okr/getOkrDetail',
         payload: {
-          year: +state.yearSelectValue,
-          qtype: +state.quarterSelectValue,
+          year: +yearSelectValue,
+          qtype: +quarterSelectValue,
           // userId: this.props.currentUser.userInfo.userId,
           userId: null,
           krId: null,
@@ -75,6 +90,29 @@ export default class Okr extends React.Component {
     } else {
       message.error('不能选择未到的季度！')
     }
+  }
+
+  getKrWeeklys = key => {
+    const { weeklyDetails } = this.props.okr;
+
+    if (!weeklyDetails[key]) {
+      this.props.dispatch({
+        type: 'okr/getKrWeeklys',
+        payload: {
+          krId: key,
+        }
+      })
+    }
+  }
+
+  stateHandler = (value, key) => {
+    let state = this.state;
+    state[key] = value;
+    this.setState({
+      ...state,
+    });
+
+    if (key === 'yearSelectValue' || key === 'quarterSelectValue') return this.getOkrDetail();
   }
 
   yearSelectRender = locked => {
@@ -132,54 +170,77 @@ export default class Okr extends React.Component {
   }
 
   detailRender = () => {
-    const { okrInfo } = this.props.okr;
+    const { okrInfo, okrDetails, weeklyDetails } = this.props.okr;
 
     return (
       <div style={{ marginTop: 24 }}>
         {
+          // 加载中
           Object.keys(okrInfo).length === 0 && (
             <Skeleton />
           )
         }
         {
-          Object.keys(okrInfo).length !== 0 && okrInfo.okrDetails && (
+          // okr 详情
+          okrDetails.length !== 0 && (
             <Fragment>
               {
-                okrInfo.okrDetails.map((value, index) => (
-                  <Card
-                    headStyle={{
-                      fontWeight: 'bold',
-                      padding: '0 16px',
-                      margin: '0',
-                    }}
-                    title={
-                      <Fragment>
-                        <span className={styles.titleIcon}><Icon type="disconnect" /></span>{number[index]}、{value.odetail}
-                      </Fragment>
-                    }
-                    style={{
-                      ...fullWidth,
-                      background: '#FBFBFB',
-                      margin: '8px 0',
-                      padding: '0 16px',
-                      borderRadius: '5px',
-                    }}
+                okrDetails.map((value, index) => (
+                  <GeneralItem
                     key={value.oid}
+                    title={value.odetail}
+                    index={index}
                   >
                     {
-                      value.krs.map(value => (
-                        <p>{value.krDetail}</p>
+                      value.krs.map((val, ind) => (
+                        <ColonelItem
+                          key={val.krId}
+                          index={ind + 1}
+                          title={val.krDetail}
+                          count={val.weeklyCount}
+                          onClick={() => this.getKrWeeklys(val.krId)}
+                        >
+                          <div className={styles.panel}>
+                          {
+                            weeklyDetails[val.krId] && (
+                              weeklyDetails[val.krId].map(value => (
+                                <Line
+                                  key={value.weeklyId}
+                                  label={<div className={styles.title} style={{ fontSize: 18 }}>{value.week}</div>}
+                                  labelCol={4}
+                                  wrapperCol={20}
+                                >
+                                  <List
+                                    bordered={false}
+                                    dataSource={value.weeklys}
+                                    renderItem={item => (<List.Item><Tag color={tagKey[item.weeklyType].color}>{tagKey[item.weeklyType].text}</Tag>{item.details}</List.Item>)}
+                                  />
+                                </Line>
+                              ))
+                            )
+                          }
+                          {
+                            (!weeklyDetails[val.krId] || weeklyDetails[val.krId].length === 0) &&
+                            (
+                              <div className={styles.nothing}>
+                                没有相关周报！
+                              </div>
+                            )
+                          }
+                          </div>
+                        </ColonelItem>
                       ))
                     }
-                  </Card>
+                  </GeneralItem>
                 ))
               }
             </Fragment>
           )
         }
         {
+          // 新建okr
           Object.keys(okrInfo).length !== 0 && !okrInfo.okrDetails && (
-            <div style={{ textAlign: 'center', marginTop: 64 }}>
+            <div className={styles.nothing}>
               <p>你还未设定这个Q的OKR，是否新建？</p>
               <Button type='primary'>新建OKR</Button>
             </div>
@@ -203,6 +264,7 @@ export default class Okr extends React.Component {
 
   render() {
     let locked = false;
+    console.log(this.props.okr);
 
     return (
       <div id={styles.okrLayout}>

@@ -6,3 +6,10 @@ export async function getOkrDetail(data) {
     data,
   })
 }
+
+export async function getKrWeeklys(data) {
+  return request('/support/week/getKrWeeklys', {
+    method: 'POST',
+    data,
+  })
+}
