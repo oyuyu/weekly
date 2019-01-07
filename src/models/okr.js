@@ -2,6 +2,7 @@ import { message } from 'antd';
 import {
   getOkrDetail,
   getKrWeeklys,
+  addNewOkr,
 } from '../services/okr';
 
 export default {
@@ -15,14 +16,7 @@ export default {
 
   effects: {
     * getOkrDetail({ payload }, { call, put }) {
-      yield put({
-        type: 'setState',
-        payload: {
-          okrInfo: {},
-          okrDetails: [],
-          weeklyDetails: {},
-        }
-      })
+      yield put({ type: 'resetState' });
       const response = yield call(getOkrDetail, { ...payload });
       const res = response.data;
       if (res.code === 0) {
@@ -50,9 +44,22 @@ export default {
         })
       }
     },
+
+    * addNewOkr({ payload }, { call, put }) {
+      const response = yield call(addNewOkr, { ...payload });
+      const res = response.data;
+      console.log(res);
+    }
   },
 
   reducers: {
+    resetState(state, { payload }) {
+      return {
+        okrInfo: {},
+        okrDetails: [],
+        weeklyDetails: {},
+      }
+    },
     setState(state, { payload }) {
       return {
         ...state,

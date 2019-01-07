@@ -13,6 +13,7 @@ import { connect } from 'dva';
 import styles from './index.less';
 import GeneralItem from './GeneralItem';
 import ColonelItem from './ColonelItem';
+import EditForm from './EditForm';
 import Line from '../../components/Line';
 
 const Option = Select.Option;
@@ -49,6 +50,8 @@ export default class Okr extends React.Component {
       },
       yearSelectValue: now.getFullYear(),
       quarterSelectValue: parseInt(now.getMonth() / 3) + 1,
+      editMode: false,
+      editSubmit: null,
     }
   }
 
@@ -115,6 +118,18 @@ export default class Okr extends React.Component {
     if (key === 'yearSelectValue' || key === 'quarterSelectValue') return this.getOkrDetail();
   }
 
+  editModeHandler = (bol) => {
+    if (!!bol) this.getOkrDetail();
+    this.setState({
+      editMode: !bol
+    })
+  }
+
+  editSubmit = () => {
+    this.editForm.handleSubmit();
+    // this.editModeHandler(1);
+  }
+
   yearSelectRender = locked => {
     const year = this.state.yearSelectValue;
     const limit = this.state.limit;
@@ -153,7 +168,10 @@ export default class Okr extends React.Component {
     )
   }
 
-  selectRender = locked => {
+  optionRender = () => {
+    const {okrDetails} = this.props.okr;
+    const locked = this.state.editMode;
+
     return (
       <Row gutter={16} type={'flex'} align={'middle'}>
         <Col span={6}>
@@ -162,8 +180,24 @@ export default class Okr extends React.Component {
         <Col span={6}>
           {this.quarterSelectRender(locked)}
         </Col>
-        <Col span={12}>
+        <Col span={6}>
           {this.props.currentUser.userInfo.userName}的OKR
+        </Col>
+        <Col span={6} style={{ textAlign: 'right' }}>
+          {
+            okrDetails.length !== 0 && !this.state.editMode && (
+              <Button onClick={() => this.editModeHandler()}>编辑</Button>
+            )
+          }
+          {
+            this.state.editMode && (
+              <Fragment>
+                <Button type="primary" onClick={() => {this.editSubmit()}}>保存</Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => this.editModeHandler(1)}>取消</Button>
+              </Fragment>
+            )
+          }
         </Col>
       </Row>
     )
@@ -239,10 +273,10 @@ export default class Okr extends React.Component {
         }
         {
           // 新建okr
-          Object.keys(okrInfo).length !== 0 && !okrInfo.okrDetails && (
+          Object.keys(okrInfo).length !== 0 && (!okrInfo.okrDetails || okrInfo.okrDetails.length === 0) && (
             <div className={styles.nothing}>
               <p>你还未设定这个Q的OKR，是否新建？</p>
-              <Button type='primary'>新建OKR</Button>
+              <Button type='primary' onClick={() => this.editModeHandler()}>新建OKR</Button>
             </div>
           )
         }
@@ -250,27 +284,24 @@ export default class Okr extends React.Component {
     )
   }
 
-  optionRender = locked => {
-    if (!locked) return void(0);
-
-    return (
-      <div className={styles.option}>
-        <Button>保存</Button>
-        <Button>返回</Button>
-        <Button>编辑</Button>
-      </div>
-    )
-  }
-
   render() {
-    let locked = false;
-    console.log(this.props.okr);
-
     return (
       <div id={styles.okrLayout}>
-        {this.selectRender(locked)}
-        {this.detailRender()}
-        {this.optionRender(locked)}
+        {this.optionRender()}
+        {
+          this.state.editMode ?
+          (
+            <EditForm
+              {...this.props}
+              year={this.state.yearSelectValue}
+              quarter={this.state.quarterSelectValue}
+              wrappedComponentRef={value => this.editForm = value}
+              init={this.props.okr.okrDetails}
+            />
+          )
+          :
+          this.detailRender()
+        }
       </div>
     )
   }

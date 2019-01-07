@@ -13,3 +13,10 @@ export async function getKrWeeklys(data) {
     data,
   })
 }
+
+export async function addNewOkr(data) {
+  return request('/support/week/addOkr', {
+    method: 'POST',
+    data,
+  })
+}

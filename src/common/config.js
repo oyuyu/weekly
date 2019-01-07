@@ -26,7 +26,6 @@ const config = [
     component: dynamicWrapper(() => import('../routes/Home/')),
     role: ['admin'],
   }, {
-    name: 'HTTP异常',
     path: '/exception',
     children: [
       {
