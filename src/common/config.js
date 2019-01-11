@@ -17,13 +17,13 @@ const config = [
     name: '关注的人',
     icon: 'star',
     path: '/focus',
-    component: dynamicWrapper(() => import('../routes/Home/')),
+    component: dynamicWrapper(() => import('../routes/Focus/')),
     role: ['admin'],
   }, {
     name: '人员列表',
     icon: 'team',
     path: '/crew',
-    component: dynamicWrapper(() => import('../routes/Home/')),
+    component: dynamicWrapper(() => import('../routes/Crew/')),
     role: ['admin'],
   }, {
     path: '/exception',

@@ -37,6 +37,8 @@ const app = dva({
 // app.model(require('./models/example').default);
 app.model(require('./models/user').default);
 app.model(require('./models/okr').default);
+app.model(require('./models/crew').default);
+app.model(require('./models/focus').default);
 
 // 4. Router
 app.router(require('./router').default);

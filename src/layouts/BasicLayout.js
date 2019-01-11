@@ -89,7 +89,7 @@ class BasicLayout extends React.Component {
         <Layout id={styles.layout} style={{ minHeight: '100%', marginLeft: this.state.collapsed ? 80 : 200  }}>
           <Layout style={{ minHeight: '100%' }}>
             <Header collapsed={this.state.collapsed} toggle={this.toggle} />
-            <Content style={{ margin: '24px 16px', padding: 16 }}>
+            <Content style={{ margin: '16px 8px', padding: 8 }}>
               {this.props.children}
             </Content>
             <Footer />

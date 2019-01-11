@@ -32,6 +32,7 @@ const formItemAddButtonStyle = {
 const formItemCardStyle = {
   borderRadius: '10px',
   marginBottom: '10px',
+  background: '#FBFBFB',
 };
 
 @Form.create()
