@@ -3,7 +3,9 @@ import {
   getOkrDetail,
   getKrWeeklys,
   addNewOkr,
+  editOkr,
 } from '../services/okr';
+// import { routerRedux } from 'dva/router';
 
 export default {
   namespace: 'okr',
@@ -47,9 +49,23 @@ export default {
 
     * addNewOkr({ payload }, { call, put }) {
       const response = yield call(addNewOkr, { ...payload });
-      const res = response.data;
-      console.log(res);
-    }
+      const res = response.data
+      if (res.code === 0) {
+        message.success('新建成功');
+      } else {
+        message.error(res.msg);
+      }
+    },
+
+    * editOkr({ payload }, { call, put }) {
+      const response = yield call(editOkr, { ...payload });
+      const res = response.data
+      if (res.code === 0) {
+        message.success('编辑成功');
+      } else {
+        message.error(res.msg);
+      }
+    },
   },
 
   reducers: {

@@ -53,11 +53,13 @@ export default class EditForm extends React.Component {
 
           children.push({
             id: ind,
+            krId: val.krId,
             value: val.krDetail,
           })
         })
         keys.push({
           id: index,
+          oid: value.oid,
           value: value.odetail,
           children,
         })
@@ -93,7 +95,6 @@ export default class EditForm extends React.Component {
         results[value.id] = value.children.map((val, ind) => (val.value))
       });
 
-      console.log(targets, results);
       this.props.form.setFieldsValue({
         targets,
         results,
@@ -169,49 +170,53 @@ export default class EditForm extends React.Component {
         // console.log('Received values of form: ', values);
         const {keys} = this.state;
         const {userInfo} = this.props.currentUser;
-
         let okrDetails = keys.map(value => {
           let temp = {
-            oDetail: values.targets[value.id],
-            oType: null,
+            odetail: values.targets[value.id],
+            otype: null,
             krs: value.children.map(val => (
               {
                 krDetail: values.results[value.id][val.id],
-                krType: null,
+                krId: '',
               }
             ))
           }
-
           temp.krs.push({
             krDetail: "其他 默认添加",
             krType: 0,
           })
-
           return temp
         });
-
         okrDetails.push({
-          oDetail: "其他 默认添加",
-          oType: 0,
+          odetail: "其他 默认添加",
+          otype: 0,
           krs: [{
             krDetail: "其他 默认添加",
             krType: 0,
           }]
         })
-
         let newOkrVo = {
           userId: userInfo.userId,
           year: this.props.year,
           qtype: this.props.quarter,
           okrDetails,
         }
+        // console.log(newOkrVo);
 
-        console.log(newOkrVo);
-
-        this.props.dispatch({
-          type: 'okr/addNewOkr',
-          payload: {newOkrVo}
-        })
+        if (this.props.id && this.props.init.length !== 0) {
+          this.props.dispatch({
+            type: 'okr/editOkr',
+            payload: {
+              okrDetails,
+              okrId: this.props.id,
+            }
+          });
+        } else {
+          this.props.dispatch({
+            type: 'okr/addNewOkr',
+            payload: {newOkrVo}
+          });
+        }
       }
     }).catch(value => {
       console.log(value);

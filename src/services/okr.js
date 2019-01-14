@@ -20,3 +20,10 @@ export async function addNewOkr(data) {
     data,
   })
 }
+
+export async function editOkr(data) {
+  return request('/support/week/editOkr', {
+    method: 'POST',
+    data,
+  })
+}

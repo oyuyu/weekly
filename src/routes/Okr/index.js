@@ -141,6 +141,7 @@ export default class Okr extends React.Component {
         onChange={value => { this.stateHandler(value, 'yearSelectValue') }}
         disabled={locked}
       >
+        <Option value={limit.year - 2}>{limit.year - 2}</Option>
         <Option value={limit.year - 1}>{limit.year - 1}</Option>
         <Option value={limit.year}>{limit.year}</Option>
         <Option value={limit.year + 1} disabled>{limit.year + 1}</Option>
@@ -297,6 +298,7 @@ export default class Okr extends React.Component {
               quarter={this.state.quarterSelectValue}
               wrappedComponentRef={value => this.editForm = value}
               init={this.props.okr.okrDetails}
+              id={this.props.okr.okrInfo.okrId}
             />
           )
           :
